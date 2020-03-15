@@ -5,11 +5,11 @@ services:
     environment:
       - MYSQL_HOST=localhost
       - MYSQL_DATABASE=opsmanage
-      - MYSQL_USER=数据库用户名
-      - MYSQL_PASSWORD=数据库用户密码
-      - MYSQL_ROOT_PASSWORD=数据库root密码
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456789
+      - MYSQL_ROOT_PASSWORD=123456789
     volumes:
-      - /data/apps/mysql:/var/lib/mysql  
+      - /Users/slan/DockerData/opsmanage/data/apps/mysql:/var/lib/mysql
     restart: always  
     networks:
       - default
@@ -20,7 +20,7 @@ services:
      ports:
        - "6379:6379"
      volumes:
-       - /data/apps/redis:/data/redis
+       - /Users/slan/DockerData/opsmanage/data/apps/redis:/data/redis
      networks:
        - default  
   rabbitmq:
@@ -37,15 +37,16 @@ services:
      container_name: ops_web
      environment:
        MYSQL_DATABASE: opsmanage
-       MYSQL_USER: "数据库用户名"
-       MYSQL_PASSWORD: "数据库用户密码"
+       MYSQL_USER: "root"
+       MYSQL_PASSWORD: "123456789"
      ports:
        - "8000:8000" #vim /mnt/OpsManage/OpsManage/settings.py文件里面的DEBUG设置为DEBUG = True 
      volumes:
-       - /mnt/OpsManage:/data/apps/opsmanage
-       - /mnt/OpsManage/upload:/data/apps/opsmanage/upload
-       - /mnt/OpsManage/logs:/data/apps/opsmanage/logs
-     command: bash /data/apps/opsmanage/docker/start.sh  
+       - /Users/slan/work/opsManage:/data/apps/opsmanage
+       - /Users/slan/DockerData/opsmanage/upload:/data/apps/opsmanage/upload
+       - /Users/slan/DockerData/opsmanage/logs:/data/apps/opsmanage/logs
+     #command: bash /Users/slan/work/opsManage/docker/start.sh
+     command: bash /data/apps/opsmanage/docker/start.sh
      links:
        - db
        - redis
@@ -54,7 +55,7 @@ services:
        - db
        - redis
        - rabbitmq
-     restart: always
+     #restart: always
      networks:
        - default  
 
